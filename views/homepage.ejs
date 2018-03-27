@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Class Comments</title>
+  <script>
+  function viewDetails (id){
+    console.log(id);
+  }
+
+  function getComments() {
+    var xmlhttp = new XMLHttpRequest();
+    var menu = document.getElementById("coursecode"); // document.getElementById("userInput").value;
+    var userInput = menu.options[menu.selectedIndex].value;
+    console.log(" This was searched: ", userInput);
+    xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
+        if (xmlhttp.status == 200) {
+          var listOfComments = JSON.parse(xmlhttp.responseText);
+          var text = "<ul>";
+          var comment;
+          for(comment in listOfComments) {
+            text += "<li>" + listOfComments[comment].comment_text;
+          }
+          text += "</ul>";
+          console.log(text);
+          document.getElementById("myDiv").innerHTML = text;
+        } else if (xmlhttp.status == 400) {
+          alert('There was an error 400');
+        } else {
+          alert('something else other than 200 was returned');
+        }
+      }
+    };
+    xmlhttp.open("GET", "/getClassComments/" + userInput, true);
+    xmlhttp.send();
+  }
+  function addComment() {
+    var xmlhttp = new XMLHttpRequest();
+    var userInput = document.getElementById("comment").value; // document.getElementById("userInput").value;
+    console.log(" This comment was added: ", userInput);
+    var parameters =
+    xmlhttp.open("POST", "/addComment", true);
+    xmlhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xmlhttp.onload = function() {
+    if (xmlhttp.status === 200) {
+        console.log("It worked");
+    }
+    else {
+        alert('Request failed.  Returned status of ' + xmlhttp.status);
+    }
+};
+    xmlhttp.send(encodeURI('comment=' + userInput + ""));
+  }
+</script>
+</head>
+<body>
+  <div class="search-section">
+    <button type="submit" onclick="getComments()">Search</button>
+    <div id="myDiv"></div>
+    Select Class: <%-result%>
+  </div>
+  <div class="comment-section">
+    Comment<input type=textarea id="comment">
+    <button type="submit" onclick="addComment()">Add Comment</button>
+  </div>
+</body>
+</html>
