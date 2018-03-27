@@ -1,10 +1,12 @@
 var express = require('express');
 var pg = require('pg');
 var bodyParser = require('body-parser');
-var connectionString = "postgres:ta_user:ta_pass@localhost:5432/ratemyclass";
+var connectionString = process.env.DATABASE_URL || "postgres:ta_user:ta_pass@localhost:5432/ratemyclass";
+// var connectionString = "";
 var app = express();
+const PORT = process.env.PORT || 5000;
 
-app.set('port', 5000)
+app.set('port', PORT)
    .use(bodyParser.json())
    .use(bodyParser.urlencoded({extended: true}))
    .use(express.static(__dirname + '/public'))
