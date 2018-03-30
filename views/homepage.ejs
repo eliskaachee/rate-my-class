@@ -20,11 +20,16 @@
           var text = "<ul>";
           var comment;
           for(comment in listOfComments) {
+            console.log(listOfComments[comment]);
             text += "<li>" + listOfComments[comment].comment_text;
+            if(listOfComments[comment].last_name) {
+              text += " taken from Professor " + listOfComments[comment].last_name;
+            }
+            text += "</li>";
           }
           text += "</ul>";
           console.log(text);
-          document.getElementById("myDiv").innerHTML = text;
+          document.getElementById("comment-results").innerHTML = text;
         } else if (xmlhttp.status == 400) {
           alert('There was an error 400');
         } else {
@@ -35,35 +40,33 @@
     xmlhttp.open("GET", "/getClassComments/" + userInput, true);
     xmlhttp.send();
   }
-  function addComment() {
-    var xmlhttp = new XMLHttpRequest();
-    var userInput = document.getElementById("comment").value; // document.getElementById("userInput").value;
-    console.log(" This comment was added: ", userInput);
-    var parameters =
-    xmlhttp.open("POST", "/addComment", true);
-    xmlhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xmlhttp.onload = function() {
-    if (xmlhttp.status === 200) {
-        console.log("It worked");
-    }
-    else {
-        alert('Request failed.  Returned status of ' + xmlhttp.status);
-    }
-};
-    xmlhttp.send(encodeURI('comment=' + userInput + ""));
-  }
+//   function addComment() {
+//     var xmlhttp = new XMLHttpRequest();
+//     var userInput = document.getElementById("comment").value; // document.getElementById("userInput").value;
+//     console.log(" This comment was added: ", userInput);
+//     var parameters =
+//     xmlhttp.open("POST", "/addComment", true);
+//     // xmlhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+//     xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+//     xmlhttp.onreadystatechange = function() {
+//     if (xmlhttp.status === 200) {
+//         console.log("It worked");
+//     }
+//     else {
+//         alert('Request failed.  Returned status of ' + xmlhttp.status);
+//     }
+// };
+//     xmlhttp.send('comment=' + encodeURI(userInput) + ""); //encodeURI adds %20's and stuff
+//   }
 </script>
 </head>
 <body>
-  <div class="search-section">
-    <button type="submit" onclick="getComments()">Search</button>
-    <div id="myDiv"></div>
+  <button type="submit" onclick="getComments()">Search</button>
+  <form class="comment-section" action="/addComment" method="post">
+    <div id="comment-results"></div>
     Select Class: <%-result%>
-  </div>
-  <div class="comment-section">
-    Comment<input type=textarea id="comment">
-    <button type="submit" onclick="addComment()">Add Comment</button>
-  </div>
+    Comment<input type=textarea name="comment">
+    <button type="submit">Add Comment</button>
+  </form>
 </body>
 </html>
