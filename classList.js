@@ -43,4 +43,5 @@ function getClassListFromDB(callback) {
   });
 }
 
+
 module.exports = {handleGetClassList: handleGetClassList};
