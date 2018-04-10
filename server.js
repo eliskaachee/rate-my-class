@@ -17,5 +17,5 @@ app.set('port', PORT)
    .post('/addComment', addCommentEngine.handleAddComment)
    .get('/getClassComments/:classcode', commentListEngine.handleGetClassComments)
    .get('/getClassList', classListEngine.handleGetClassList)
-   .get('/homepage', classListEngine.handleGetClassList, professorListEngine.handleGetProfessorList)
+   .get('/', classListEngine.handleGetClassList, professorListEngine.handleGetProfessorList)
    .listen(app.get('port'));
