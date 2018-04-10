@@ -5,7 +5,6 @@ var classListEngine = require('./classList.js');
 var addCommentEngine = require('./addComment.js');
 var commentListEngine = require('./commentList.js');
 var professorListEngine = require('./professorList.js');
-// var connectionString = "";
 var app = express();
 const PORT = process.env.PORT || 5000;
 

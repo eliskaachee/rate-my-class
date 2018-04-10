@@ -1,0 +1,45 @@
+.page-wrapper {
+  max-width: 700px;
+  margin: auto;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+img {
+  width: 100%;
+  position: fixed;
+  display: block;
+  z-index: -3;
+}
+
+.title {
+  text-align: center;
+}
+
+.main-section {
+  margin-bottom: 30px;
+  background-color: #ffffff;
+  opacity: 0.8;
+  padding: 30px;
+}
+
+.comment {
+  background-color: #a0a0a0;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.comment-text {
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.comment-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

@@ -3,8 +3,24 @@
 <head>
   <meta charset="utf-8">
   <title>Class Comments</title>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/homepage.css" />
   <script>
 
+  function formatDate(date) {
+    // courtesy of: https://stackoverflow.com/questions/3552461/how-to-format-a-javascript-date?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+    var monthNames = [
+    "January", "February", "March",
+    "April", "May", "June", "July",
+    "August", "September", "October",
+    "November", "December"
+  ];
+
+  var day = date.getDate();
+  var monthIndex = date.getMonth();
+  var year = date.getFullYear();
+
+  return day + ' ' + monthNames[monthIndex] + ' ' + year;
+  }
   function getComments() {
     var xmlhttp = new XMLHttpRequest();
     var menu = document.getElementById("coursecode"); // document.getElementById("userInput").value;
@@ -14,16 +30,21 @@
       if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
         if (xmlhttp.status == 200) {
           var listOfComments = JSON.parse(xmlhttp.responseText);
-          var text = "<ul>";
           var comment;
+          var text = "";
           for(comment in listOfComments) {
-            text += "<li>" + listOfComments[comment].comment_text;
+            text += "<div class=\"comment\">";
+            text += "<div class=\"comment-text\">" + listOfComments[comment].comment_text + "</div>";
+            text += "<div class=\"comment-info\">";
+            // text += "<div class=\"username\">Posted by: " + listOfComments[comment].username + "</div>";
             if(listOfComments[comment].last_name) {
-              text += " taken from Professor " + listOfComments[comment].last_name;
+              text += "<div class=\"username\">Professor: " + listOfComments[comment].last_name + "</div>";
             }
-            text += "</li>";
+            text += "<div class=\"post-date\">Date: " + formatDate(new Date(listOfComments[comment].date_added)) + "</div>";
+            text += "</div>"; // ends comment-info
+            text += "</div>"; // ends comment
           }
-          text += "</ul>";
+          console.log(text);
           document.getElementById("comment-results").innerHTML = text;
         } else if (xmlhttp.status == 400) {
           alert('There was an error 400');
@@ -38,21 +59,31 @@
 </script>
 </head>
 <body>
-  <div class="search-comments">
-    <h1>Search</h1>
-    Pick a Class to Search: <%-selectClass%>
-    <button type="submit" onclick="getComments()">Search</button>
-    <div id="comment-results"></div>
-  </div>
-  <div class="add-comment">
-    <h1>Add a Comment</h1>
-    <form class="comment-section" action="/addComment" method="post">
-      
-      Select Class: <%-selectClass%>
-      Select Professor: <%-selectProfessor%>
-      Comment<input type=textarea name="comment">
-      <button type="submit">Add Comment</button>
-    </form>
+  <img src="/STC.jpg">
+  <div class="page-wrapper">
+    <div class="title main-section">
+        <h1>Rate My Class</h1>
+        <h2>BYU-Idaho Computer Science and Electrical Engineering Department</h2>
+    </div>
+    <div class="search-comments main-section">
+      <h1>Looking for a Class?</h1>
+      <h2>Search for comments from former students</h2>
+      <p>Pick a Class to Search: <%-selectClass%></p>
+      <button type="submit" onclick="getComments()">Search</button>
+      <div id="comment-results"></div>
+    </div>
+    <div class="add-comment main-section">
+      <h1>Survived a Class?</h1>
+      <h2>Share your advice! (without cheating)</h2>
+      <form class="comment-section" action="/addComment" method="post">
+        <p>Select Class: <%-selectClass%></p>
+        <p>Select Professor: <%-selectProfessor%></p>
+        <p>Comment:</p>
+          <textarea rows="4" cols="30" name="comment"></textarea>
+        </br>
+        <button type="submit">Add Comment</button>
+      </form>
+    </div>
   </div>
 </body>
 </html>
