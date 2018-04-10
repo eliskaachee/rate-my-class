@@ -30,7 +30,7 @@ function handleAddComment(req, res) {
         res.json({success: false});
       }
       res.status(200);
-      res.redirect('/homepage');
+      res.redirect('/');
     });
   });
 }
